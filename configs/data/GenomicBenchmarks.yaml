@@ -1,0 +1,9 @@
+_target_: src.data.GenomicBenchmarks.GenomicBenchmarksDataModule
+k: 6 
+tokenizer_path: zhihan1996/DNA_bert_6
+dataset_name: human_enhancers_cohn
+batch_size: 16 
+num_workers: 0
+pin_memory: False 
+pretokenize: False
+  

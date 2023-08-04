@@ -1,0 +1,16 @@
+_target_: src.models.DNABERT.DNABERTClassifier
+
+model_path: zhihan1996/DNA_bert_6
+num_labels: 2
+
+optimizer:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: 1e-6
+
+scheduler:
+  _target_: torch.optim.lr_scheduler.StepLR
+  _partial_: true
+  step_size: 5 
+  gamma: 0.5
+  
