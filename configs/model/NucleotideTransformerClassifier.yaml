@@ -1,0 +1,16 @@
+_target_: src.models.NucleotideTransformer.NucleotideTransformerClassifier
+
+model_path: InstaDeepAI/nucleotide-transformer-500m-human-ref
+num_labels: 2
+
+optimizer:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: 1e-6
+
+scheduler:
+  _target_: torch.optim.lr_scheduler.StepLR
+  _partial_: true
+  step_size: 5 
+  gamma: 0.5
+  
