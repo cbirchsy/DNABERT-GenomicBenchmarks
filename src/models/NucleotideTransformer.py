@@ -76,12 +76,12 @@ class NucleotideTransformerClassifier(BaseClassifier):
                 modules_to_save=["classifier"]
             )
             self.model = get_peft_model(
-                AutoModelForSequenceClassification.from_pretrained(self.hparams.model_path)
+                AutoModelForSequenceClassification.from_pretrained(self.hparams.model_path, num_labels = self.hparams.num_labels)
                 ,
                 peft_config
             )
         else:
-            self.model = AutoModelForSequenceClassification.from_pretrained(self.hparams.model_path) 
+            self.model = AutoModelForSequenceClassification.from_pretrained(self.hparams.model_path, num_labels = self.hparams.num_labels) 
         
         self.loss  = torch.nn.CrossEntropyLoss()
         self.metrics = {

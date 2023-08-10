@@ -1,0 +1,38 @@
+# @package _global_
+
+# to execute this experiment run:
+# python train.py experiment=example
+
+defaults:
+  - override /data: GenomicBenchmarks
+  - override /model: NucleotideTransformerClassifier
+  - override /logger: wandb
+
+# all parameters below will be merged with parameters from default configurations set above
+# this allows you to overwrite only specified parameters
+
+seed: 12345
+
+model:
+  model_path: "InstaDeepAI/nucleotide-transformer-2.5b-multi-species"
+  peft: True
+  num_labels: 2
+  use_attention_mask: False
+  
+data:
+  batch_size: 1
+  tokenizer_path: "InstaDeepAI/nucleotide-transformer-2.5b-multi-species"
+  tokenize_for_dnabert: False
+  dataset_name: "demo_human_or_worm"
+  padding: False
+
+tags: 
+ - "Genomic Benchmarks"
+ - "Nucleotide Transformer Classifier 2.5B"
+ - "IA3 PEFT"
+
+logger:
+  wandb:
+    project: "NucleotideTransformer2.5B-GenomicBenchmarks"
+    tags: ${tags}
+    group: ${data.dataset_name}

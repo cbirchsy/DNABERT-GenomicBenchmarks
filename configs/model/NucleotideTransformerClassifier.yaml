@@ -2,6 +2,7 @@ _target_: src.models.NucleotideTransformer.NucleotideTransformerClassifier
 
 model_path: InstaDeepAI/nucleotide-transformer-500m-human-ref
 num_labels: 2
+use_attention_mask: True
 
 optimizer:
   _target_: torch.optim.Adam

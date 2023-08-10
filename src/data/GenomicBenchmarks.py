@@ -58,29 +58,32 @@ class PreTokenizedGenomicBenchmarksDataset(Dataset):
             return self.input_ids[idx], self.labels[idx]
 
 class GenomicBenchmarksDataModule(pl.LightningDataModule):
-    def __init__(self, k, tokenizer_path, dataset_name, batch_size=32, num_workers=0, pin_memory=True, pretokenize=True, padding=False, tokenize_for_dnabert=True):
+    def __init__(self, k, tokenizer_path, dataset_name, batch_size=32, num_workers=0, pin_memory=True, pretokenize=True, padding=False, tokenize_for_dnabert=True      
+        ):
         super().__init__()
         self.k = k
-        self.batch_size = batch_size
+        self.batch_size  = batch_size
         self.num_workers = num_workers
-        self.pin_memory = pin_memory
+        self.pin_memory  = pin_memory
         self.pretokenize = pretokenize
-        self.padding = padding
+        self.padding     = padding
         self.tokenize_for_dnabert = tokenize_for_dnabert
+        
         if self.tokenize_for_dnabert:
             self.model_max_length = 512
         else:
-            self.model_max_length = 1002
+            self.model_max_length = 1000
         
         self._configure_dataset(dataset_name)
         
-        self.tokenizer_kwargs={
-            'truncation':True,
-            'max_length':self.max_length,
+        self.tokenizer_kwargs = {
+            'truncation': True,
+            'max_length': self.max_length,
         }
+        
         if self.padding:
-            self.tokenizer_kwargs['padding']='max_length'
-
+            self.tokenizer_kwargs['padding'] = 'max_length'
+                
         if self.pretokenize:
             print("Pre-tokenizing sequences...")
             self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_path, use_fast=False)
@@ -112,7 +115,12 @@ class GenomicBenchmarksDataModule(pl.LightningDataModule):
         )
         ds_test = datasets.Dataset.from_pandas(df_test)
         
-        self.max_length = min(self.model_max_length, max(max([len(seq) for seq in df_train['seq']]), max([len(seq) for seq in df_test['seq']])))
+        if self.tokenize_for_dnabert:
+            self.model_max_length = 512
+            self.max_length = min(self.model_max_length, max(max([len(seq) for seq in df_train['seq']]), max([len(seq) for seq in df_test['seq']])))
+        else:
+            self.model_max_length = 1000
+        self.max_length = self.model_max_length
 
         self.dataset = datasets.DatasetDict()
         self.dataset['train'] = ds_train
